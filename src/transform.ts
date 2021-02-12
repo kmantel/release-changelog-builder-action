@@ -7,27 +7,46 @@ import {
   Transformer,
   DefaultConfiguration
 } from './configuration'
+import { CodeChangeInfo, sortCodeChanges } from './codechange'
+import { CommitInfo } from './commits'
 
 export function buildChangelog(
-  prs: PullRequestInfo[],
+  changes: CodeChangeInfo[],
   config: Configuration,
   options: ReleaseNotesOptions
 ): string {
   // sort to target order
   const sort = config.sort || DefaultConfiguration.sort
   const sortAsc = sort.toUpperCase() === 'ASC'
-  prs = sortPullRequests(prs, sortAsc)
-  core.info(`ℹ️ Sorted all pull requests ascending: ${sort}`)
+  changes = sortCodeChanges(changes, sortAsc)
+  core.info(`ℹ️ Sorted all changes ascending: ${sort}`)
 
   const validatedTransformers = validateTransfomers(config.transformers)
-  const transformedMap = new Map<PullRequestInfo, string>()
-  // convert PRs to their text representation
-  for (const pr of prs) {
+  const transformedMap = new Map<CodeChangeInfo, string>()
+  // convert changes to their text representation
+  for (const c of changes) {
+    // PullRequestInfo
+    if (c.hasOwnProperty('mergeCommitSha')) {
+      const template = config.pr_template || DefaultConfiguration.pr_template
+      const filledTemplate = fillPRTemplate(
+        <PullRequestInfo>c,
+        template
+      )
+    }
+    // assume CommitInfo
+    else {
+      const template = config.pr_template || DefaultConfiguration.pr_template
+      const filledTemplate = fillCommitTemplate(
+        <CommitInfo>c,
+        template
+      )
+    }
+
     transformedMap.set(
-      pr,
+      c,
       transform(
-        fillTemplate(
-          pr,
+        fillPRTemplate(
+          c,
           config.pr_template || DefaultConfiguration.pr_template
         ),
         validatedTransformers
@@ -37,9 +56,9 @@ export function buildChangelog(
   core.info(
     `ℹ️ Used ${validateTransfomers.length} transformers to adjust message`
   )
-  core.info(`✒️ Wrote messages for ${prs.length} pull requests`)
+  core.info(`✒️ Wrote messages for ${changes.length} changes`)
 
-  // bring PRs into the order of categories
+  // bring changes into the order of categories
   const categorized = new Map<Category, string[]>()
   const categories = config.categories || DefaultConfiguration.categories
   const ignoredLabels =
@@ -167,7 +186,7 @@ function haveCommonElements(arr1: string[], arr2: string[]): Boolean {
   return arr1.some(item => arr2.includes(item))
 }
 
-function fillTemplate(pr: PullRequestInfo, template: string): string {
+function fillPRTemplate(pr: PullRequestInfo, template: string): string {
   let transformed = template
   transformed = transformed.replace('${{NUMBER}}', pr.number.toString())
   transformed = transformed.replace('${{TITLE}}', pr.title)

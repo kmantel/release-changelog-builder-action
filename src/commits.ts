@@ -1,13 +1,12 @@
 import moment from 'moment'
 import * as core from '@actions/core'
 import {Octokit, RestEndpointMethodTypes} from '@octokit/rest'
+import { CodeChangeInfo } from './codechange'
 
-export interface CommitInfo {
+export interface CommitInfo extends CodeChangeInfo{
   sha: string
   summary: string
   message: string
-  author: string
-  date: moment.Moment
 }
 
 export class Commits {
