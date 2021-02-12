@@ -172,7 +172,7 @@ function fillTemplate(pr: PullRequestInfo, template: string): string {
   transformed = transformed.replace('${{NUMBER}}', pr.number.toString())
   transformed = transformed.replace('${{TITLE}}', pr.title)
   transformed = transformed.replace('${{URL}}', pr.htmlURL)
-  transformed = transformed.replace('${{MERGED_AT}}', pr.mergedAt.toISOString())
+  transformed = transformed.replace('${{MERGED_AT}}', pr.date.toISOString())
   transformed = transformed.replace('${{AUTHOR}}', pr.author)
   transformed = transformed.replace('${{LABELS}}', pr.labels?.join(', ') || '')
   transformed = transformed.replace('${{MILESTONE}}', pr.milestone || '')

@@ -8,7 +8,7 @@ export interface PullRequestInfo {
   number: number
   title: string
   htmlURL: string
-  mergedAt: moment.Moment
+  date: moment.Moment
   mergeCommitSha: string
   author: string
   repoName: string
@@ -38,7 +38,7 @@ export class PullRequests {
         number: pr.data.number,
         title: pr.data.title,
         htmlURL: pr.data.html_url,
-        mergedAt: moment(pr.data.merged_at),
+        date: moment(pr.data.merged_at),
         mergeCommitSha: pr.data.merge_commit_sha || '',
         author: pr.data.user?.login || '',
         repoName: pr.data.base.repo.full_name,
@@ -91,7 +91,7 @@ export class PullRequests {
           number: pr.number,
           title: pr.title,
           htmlURL: pr.html_url,
-          mergedAt: moment(pr.merged_at),
+          date: moment(pr.merged_at),
           mergeCommitSha: pr.merge_commit_sha || '',
           author: pr.user?.login || '',
           repoName: pr.base.repo.full_name,
@@ -165,18 +165,18 @@ export function sortPullRequests(
 ): PullRequestInfo[] {
   if (ascending) {
     pullRequests.sort((a, b) => {
-      if (a.mergedAt.isBefore(b.mergedAt)) {
+      if (a.date.isBefore(b.date)) {
         return -1
-      } else if (b.mergedAt.isBefore(a.mergedAt)) {
+      } else if (b.date.isBefore(a.date)) {
         return 1
       }
       return 0
     })
   } else {
     pullRequests.sort((b, a) => {
-      if (a.mergedAt.isBefore(b.mergedAt)) {
+      if (a.date.isBefore(b.date)) {
         return -1
-      } else if (b.mergedAt.isBefore(a.mergedAt)) {
+      } else if (b.date.isBefore(a.date)) {
         return 1
       }
       return 0

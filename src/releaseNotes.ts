@@ -147,7 +147,7 @@ export class ReleaseNotes {
         number: 0,
         title: commit.summary,
         htmlURL: '',
-        mergedAt: commit.date,
+        date: commit.date,
         mergeCommitSha: '',
         author: commit.author || '',
         repoName: '',

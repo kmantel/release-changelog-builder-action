@@ -413,7 +413,7 @@ class PullRequests {
                     number: pr.data.number,
                     title: pr.data.title,
                     htmlURL: pr.data.html_url,
-                    mergedAt: moment_1.default(pr.data.merged_at),
+                    date: moment_1.default(pr.data.merged_at),
                     mergeCommitSha: pr.data.merge_commit_sha || '',
                     author: ((_a = pr.data.user) === null || _a === void 0 ? void 0 : _a.login) || '',
                     repoName: pr.data.base.repo.full_name,
@@ -458,7 +458,7 @@ class PullRequests {
                             number: pr.number,
                             title: pr.title,
                             htmlURL: pr.html_url,
-                            mergedAt: moment_1.default(pr.merged_at),
+                            date: moment_1.default(pr.merged_at),
                             mergeCommitSha: pr.merge_commit_sha || '',
                             author: ((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login) || '',
                             repoName: pr.base.repo.full_name,
@@ -524,10 +524,10 @@ exports.PullRequests = PullRequests;
 function sortPullRequests(pullRequests, ascending) {
     if (ascending) {
         pullRequests.sort((a, b) => {
-            if (a.mergedAt.isBefore(b.mergedAt)) {
+            if (a.date.isBefore(b.date)) {
                 return -1;
             }
-            else if (b.mergedAt.isBefore(a.mergedAt)) {
+            else if (b.date.isBefore(a.date)) {
                 return 1;
             }
             return 0;
@@ -535,10 +535,10 @@ function sortPullRequests(pullRequests, ascending) {
     }
     else {
         pullRequests.sort((b, a) => {
-            if (a.mergedAt.isBefore(b.mergedAt)) {
+            if (a.date.isBefore(b.date)) {
                 return -1;
             }
-            else if (b.mergedAt.isBefore(a.mergedAt)) {
+            else if (b.date.isBefore(a.date)) {
                 return 1;
             }
             return 0;
@@ -688,7 +688,7 @@ class ReleaseNotes {
                     number: 0,
                     title: commit.summary,
                     htmlURL: '',
-                    mergedAt: commit.date,
+                    date: commit.date,
                     mergeCommitSha: '',
                     author: commit.author || '',
                     repoName: '',
@@ -961,7 +961,7 @@ class Tags {
 exports.Tags = Tags;
 /*
   Sorts an array of tags as shown below:
-  
+
   2020.4.0
   2020.4.0-rc02
   2020.3.2
@@ -1164,7 +1164,7 @@ function fillTemplate(pr, template) {
     transformed = transformed.replace('${{NUMBER}}', pr.number.toString());
     transformed = transformed.replace('${{TITLE}}', pr.title);
     transformed = transformed.replace('${{URL}}', pr.htmlURL);
-    transformed = transformed.replace('${{MERGED_AT}}', pr.mergedAt.toISOString());
+    transformed = transformed.replace('${{MERGED_AT}}', pr.date.toISOString());
     transformed = transformed.replace('${{AUTHOR}}', pr.author);
     transformed = transformed.replace('${{LABELS}}', ((_a = pr.labels) === null || _a === void 0 ? void 0 : _a.join(', ')) || '');
     transformed = transformed.replace('${{MILESTONE}}', pr.milestone || '');
@@ -17147,7 +17147,7 @@ module.exports = require("zlib");;
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -17160,7 +17160,7 @@ module.exports = require("zlib");;
 /******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		var threw = true;
 /******/ 		try {
@@ -17169,14 +17169,14 @@ module.exports = require("zlib");;
 /******/ 		} finally {
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
 /******/ 		}
-/******/ 	
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	(() => {
@@ -17186,9 +17186,9 @@ module.exports = require("zlib");;
 /******/ 			return module;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/compat */
-/******/ 	
+/******/
 /******/ 	__nccwpck_require__.ab = __dirname + "/";/************************************************************************/
 /******/ 	// module exports must be returned from runtime so entry inlining is disabled
 /******/ 	// startup
